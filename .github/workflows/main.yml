@@ -1,0 +1,39 @@
+name: Flutter CI
+
+on:
+  push:
+    branches:
+      - main  # You can change this to the branch you want to trigger the workflow on
+  pull_request:
+    branches:
+      - main  # Trigger workflow on pull request to main branch
+
+jobs:
+  flutter-test:
+    runs-on: ubuntu-latest  # Use macos-latest or windows-latest if needed
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.7.0'  # Set to your Flutter version
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Run tests with coverage
+        run: |
+          flutter test --coverage
+
+      - name: Generate coverage report
+        run: |
+          genhtml coverage/lcov.info -o coverage/report
+
+      - name: Upload coverage report as an artifact 
+        uses: actions/upload-artifact@v2
+        with:
+          name: coverage-report
+          path: coverage/report
