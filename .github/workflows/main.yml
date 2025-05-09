@@ -13,27 +13,31 @@ jobs:
     runs-on: macos-latest
 
     steps:
+      # Checkout repository
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      # Set up Flutter
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.7.0'  # Set to your Flutter version
 
+      # Install dependencies
       - name: Install dependencies
         run: flutter pub get
 
+      # Run tests with coverage
       - name: Run tests with coverage
-        run: |
-          flutter test --coverage
+        run: flutter test --coverage
 
+      # Generate coverage report
       - name: Generate coverage report
-        run: |
-          genhtml coverage/lcov.info -o coverage/report
+        run: genhtml coverage/lcov.info -o coverage/report
 
-      - name: Upload coverage report as an artifact 
-        uses: actions/upload-artifact@v3
+      # Upload coverage report as an artifact
+      - name: Upload coverage report as an artifact
+        uses: actions/upload-artifact@v2  # Use v2, not v3
         with:
           name: coverage-report
           path: coverage/report
