@@ -36,8 +36,8 @@ jobs:
         run: genhtml coverage/lcov.info -o coverage/report
 
       # Upload coverage report as an artifact
-      - name: Upload coverage report as an artifact
-        uses: actions/upload-artifact@v3  # Use v3
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
         with:
-          name: coverage-report
-          path: coverage/report
+         name: my-artifact
+         path: path/to/artifact
