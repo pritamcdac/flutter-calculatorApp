@@ -37,7 +37,7 @@ jobs:
 
       # Upload coverage report as an artifact
       - name: Upload artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v3.1.3
         with:
          name: my-artifact
          path: path/to/artifact
