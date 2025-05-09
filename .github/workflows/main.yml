@@ -11,26 +11,28 @@ jobs:
     runs-on: macos-14
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-      - uses: subosito/flutter-action@v2
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.29.3'
-      # Install dependencies
+
       - name: Install dependencies
         run: flutter pub get
 
-      # Run tests with coverage
       - name: Run tests with coverage
         run: flutter test --coverage
 
-      # Generate coverage report
-      - name: Generate coverage report
+      - name: Install lcov (for genhtml)
+        run: brew install lcov
+
+      - name: Generate HTML coverage report
         run: genhtml coverage/lcov.info -o coverage/report
 
-      # Upload coverage report as an artifact
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4.6.2
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v3
         with:
-         name: my-artifact
-         path: path/to/artifact
+          name: coverage-report
+          path: coverage/report
