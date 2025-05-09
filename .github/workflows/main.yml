@@ -2,27 +2,20 @@ name: Flutter CI
 
 on:
   push:
-    branches:
-      - main  # You can change this to the branch you want to trigger the workflow on
+    branches: [ main ]
   pull_request:
-    branches:
-      - main  # Trigger workflow on pull request to main branch
+    branches: [ main ]
 
 jobs:
-  flutter-test:
-    runs-on: macos-latest
+  build:
+    runs-on: macos-14
 
     steps:
-      # Checkout repository
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-      # Set up Flutter
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
+      - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.29.3  # Set to your Flutter version
-
+          flutter-version: '3.29.3'
       # Install dependencies
       - name: Install dependencies
         run: flutter pub get
