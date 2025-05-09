@@ -10,7 +10,7 @@ on:
 
 jobs:
   flutter-test:
-    runs-on: ubuntu-latest  # Use macos-latest or windows-latest if needed
+    runs-on: macos-latest
 
     steps:
       - name: Checkout repository
