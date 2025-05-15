@@ -72,6 +72,14 @@ jobs:
           security unlock-keychain -p "password" build.keychain
           security set-keychain-settings build.keychain
 
+      - name: Install provisioning profile
+        run: |
+          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+          echo "${{ secrets.IOS_PROVISIONING_PROFILE }}" | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/CybageCI.mobileprovision
+
+      - name: List code signing identities
+        run: security find-identity -v -p codesigning
+
       - name: Generate ExportOptions.plist
         run: |
           cat > ExportOptions.plist <<EOF
