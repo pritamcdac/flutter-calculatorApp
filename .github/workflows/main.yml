@@ -82,7 +82,7 @@ jobs:
               <key>method</key>
               <string>app-store</string>
               <key>teamID</key>
-              <string>K3QV75X8GJ</string>
+              <string>VB78Y67GX6</string>
               <key>provisioningProfiles</key>
               <dict>
                   <key>com.cybage.alm</key>
