@@ -135,6 +135,7 @@ jobs:
             DEVELOPMENT_TEAM=VB78Y67GX6 \
             PROVISIONING_PROFILE_SPECIFIER=CybageCI \
             PRODUCT_BUNDLE_IDENTIFIER=com.cybage.alm \
+            CODE_SIGN_IDENTITY="Apple Distribution"
             build
 
       - name: 🍏 Build IPA
