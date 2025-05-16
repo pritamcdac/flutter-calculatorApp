@@ -15,8 +15,8 @@ jobs:
       PUB_CACHE: /Users/runner/.pub-cache
 
     steps:
-      # ──────────────── Common setup ────────────────
-      - name: ⬇️  Checkout repository
+      # ─────────────── Common Setup ───────────────
+      - name: ⬇️ Checkout repository
         uses: actions/checkout@v3
 
       - name: 🔧 Set up Flutter
@@ -42,7 +42,7 @@ jobs:
           name: coverage-report
           path: coverage/report
 
-      # ──────────────── Android build ────────────────
+      # ─────────────── Android Build ───────────────
       - name: 🤖 Build APK
         run: flutter build apk --release
 
@@ -61,89 +61,76 @@ jobs:
           name: release-aab
           path: build/app/outputs/bundle/release/app-release.aab
 
-      # ──────────────── iOS code‑signing & build ────────────────
+      # ─────────────── iOS Code Signing & Manual IPA Export ───────────────
       - name: 🔑 Decode and import iOS certificate
         run: |
           echo "${{ secrets.IOS_CERTIFICATE_P12 }}" | base64 --decode > /tmp/certificate.p12
-
-          # Create / configure temporary keychain
           security create-keychain -p "password" build.keychain
           security default-keychain -s build.keychain
           security unlock-keychain -p "password" build.keychain
           security set-keychain-settings -lut 21600 build.keychain
-
-          # Import the distribution certificate (.p12)
-          security import /tmp/certificate.p12 \
-            -k build.keychain \
-            -P "${{ secrets.IOS_CERTIFICATE_PASSWORD }}" \
-            -T /usr/bin/codesign -A
-
-          # Add keychain to search path
+          security import /tmp/certificate.p12 -k build.keychain -P "${{ secrets.IOS_CERTIFICATE_PASSWORD }}" -T /usr/bin/codesign -A
           security list-keychains -s build.keychain login.keychain
           security set-key-partition-list -S apple-tool:,apple: -s -k "password" build.keychain
 
       - name: 📃 Install provisioning profile
         run: |
           mkdir -p "$HOME/Library/MobileDevice/Provisioning Profiles"
-          echo "${{ secrets.IOS_PROVISIONING_PROFILE }}" | base64 --decode \
-            > "$HOME/Library/MobileDevice/Provisioning Profiles/CybageCI.mobileprovision"
+          echo "${{ secrets.IOS_PROVISIONING_PROFILE }}" | base64 --decode > "$HOME/Library/MobileDevice/Provisioning Profiles/CybageCI.mobileprovision"
 
       - name: 🔍 List code‑signing identities (debug)
         run: security find-identity -v -p codesigning
 
       - name: 📝 Generate ExportOptions.plist
         run: |
-          cat > ExportOptions.plist <<'EOF'
+          cat > ios/ExportOptions.plist <<'EOF'
           <?xml version="1.0" encoding="UTF-8"?>
           <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
           <plist version="1.0">
             <dict>
               <key>method</key>
               <string>app-store</string>
-
               <key>teamID</key>
               <string>VB78Y67GX6</string>
-
               <key>provisioningProfiles</key>
               <dict>
                 <key>com.cybage.alm</key>
                 <string>CybageCI</string>
               </dict>
-
               <key>signingStyle</key>
               <string>manual</string>
-
               <key>stripSwiftSymbols</key>
               <true/>
-
               <key>compileBitcode</key>
               <true/>
-
               <key>destination</key>
               <string>export</string>
             </dict>
           </plist>
           EOF
 
-      - name: 🔧 Force manual signing (in Xcode project)
-        working-directory: ios
+      - name: 📦 Archive iOS app
         run: |
-          xcodebuild -project Runner.xcodeproj \
+          xcodebuild -project ios/Runner.xcodeproj \
             -scheme Runner \
             -configuration Release \
+            -archivePath build/ios/archive/Runner.xcarchive \
             CODE_SIGN_STYLE=Manual \
             DEVELOPMENT_TEAM=VB78Y67GX6 \
             PROVISIONING_PROFILE_SPECIFIER=CybageCI \
             PRODUCT_BUNDLE_IDENTIFIER=com.cybage.alm \
-            CODE_SIGN_IDENTITY="Apple Distribution"
-            
+            CODE_SIGN_IDENTITY="Apple Distribution" \
+            archive
 
-      - name: 🍏 Build IPA
-        run: flutter build ipa --release --export-options-plist=ExportOptions.plist
+      - name: 📤 Export IPA manually
+        run: |
+          xcodebuild -exportArchive \
+            -archivePath build/ios/archive/Runner.xcarchive \
+            -exportOptionsPlist ios/ExportOptions.plist \
+            -exportPath build/ios/ipa
 
       - name: ☁️ Upload IPA artifact
         uses: actions/upload-artifact@v4
         with:
           name: release-ipa
           path: build/ios/ipa/*.ipa
-
