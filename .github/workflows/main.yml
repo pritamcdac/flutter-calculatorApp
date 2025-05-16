@@ -136,7 +136,7 @@ jobs:
             PROVISIONING_PROFILE_SPECIFIER=CybageCI \
             PRODUCT_BUNDLE_IDENTIFIER=com.cybage.alm \
             CODE_SIGN_IDENTITY="Apple Distribution"
-            build
+            
 
       - name: 🍏 Build IPA
         run: flutter build ipa --release --export-options-plist=ExportOptions.plist
