@@ -129,8 +129,11 @@ jobs:
             -exportOptionsPlist ios/ExportOptions.plist \
             -exportPath build/ios/ipa
 
-      - name: ☁️ Upload IPA artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: release-ipa
-          path: build/ios/ipa/*.ipa
+     
+      - name: 🚀 Upload IPA to TestFlight
+        run: |
+         xcrun altool --upload-app \
+         --type ios \
+         --file build/ios/ipa/*.ipa \
+         --username "${{ secrets.APPLE_ID }}" \
+         --password "${{ secrets.APP_SPECIFIC_PASSWORD }}"
