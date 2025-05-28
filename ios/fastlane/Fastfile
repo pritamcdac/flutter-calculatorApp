@@ -9,8 +9,11 @@ platform :ios do
       export_options: {
         provisioningProfiles: {
           "com.cybage.alm" => "CybageCI"
-        }
-      }
+        },
+        teamID: ENV["DEVELOPER_TEAM_ID"],
+        signingStyle: "manual"
+      },
+      export_team_id: ENV["DEVELOPER_TEAM_ID"]
     )
 
     upload_to_testflight(
