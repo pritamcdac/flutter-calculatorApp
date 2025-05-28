@@ -130,10 +130,13 @@ jobs:
             -exportPath build/ios/ipa
 
      
-      - name: 🚀 Upload IPA to TestFlight
+      - name: 🚀 Upload IPA to TestFlight using Fastlane
+        working-directory: ios
+        env:
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.APP_SPECIFIC_PASSWORD }}
         run: |
-         xcrun altool --upload-app \
-         --type ios \
-         --file build/ios/ipa/*.ipa \
-         --username "${{ secrets.APPLE_ID }}" \
-         --password "${{ secrets.APP_SPECIFIC_PASSWORD }}"
+          bundle install || gem install bundler
+          gem install fastlane
+          fastlane beta
+
