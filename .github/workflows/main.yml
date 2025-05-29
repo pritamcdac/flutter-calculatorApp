@@ -142,7 +142,7 @@ jobs:
         env:
           APPLE_ID: ${{ secrets.APPLE_ID }}
           FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.APP_SPECIFIC_PASSWORD }}
-          DEVELOPER_TEAM_ID: ${{ secrets.DEVELOPER_TEAM_ID }}
+          DEVELOPER_TEAM_ID: ${{ secrets.APPLE_ID }}
         run: |
           bundle install || gem install bundler
           gem install fastlane
