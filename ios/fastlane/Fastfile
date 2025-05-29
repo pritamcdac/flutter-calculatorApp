@@ -2,12 +2,10 @@ default_platform(:ios)
 
 platform :ios do
   desc "Upload to TestFlight"
-  lane :beta do
-    upload_to_testflight(
-      ipa: "build/ios/ipa/calculator_app.ipa",
-      skip_waiting_for_build_processing: true
-    )
-  end
+lane :beta do
+  upload_to_testflight(
+    ipa: "build/ios/ipa/calculator_app.ipa",
+    skip_waiting_for_build_processing: true,
+    username: "pradeepbo@cybage.com"
+  )
 end
-
-
