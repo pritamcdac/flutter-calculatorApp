@@ -1,14 +1,12 @@
-build_app(
-  scheme: "Runner",
-  export_method: "app-store",
-  export_options: {
-    provisioningProfiles: {
-      "com.example.calculatorApp" => "CybageCI"
-    },
-    signingStyle: "manual",
-    teamID: "
-VB78Y67GX6" # Replace with your actual team ID
-  },
-  xcargs: "DEVELOPMENT_TEAM=
-VB78Y67GX6",
-)
+# Fastfile
+default_platform(:ios)
+
+platform :ios do
+  desc "Upload to TestFlight"
+  lane :beta do
+    upload_to_testflight(
+      ipa: "build/ios/ipa/Runner.ipa",
+      skip_waiting_for_build_processing: true
+    )
+  end
+end
