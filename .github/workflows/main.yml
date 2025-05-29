@@ -124,10 +124,12 @@ jobs:
 
       - name: 📤 Export IPA manually
         run: |
-          xcodebuild -exportArchive \
-            -archivePath build/ios/archive/Runner.xcarchive \
-            -exportOptionsPlist ios/ExportOptions.plist \
-            -exportPath build/ios/ipa
+         mkdir -p ios/build/ios/ipa
+         xcodebuild -exportArchive \
+         -archivePath build/ios/archive/Runner.xcarchive \
+         -exportOptionsPlist ios/ExportOptions.plist \
+         -exportPath ios/build/ios/ipa
+
 
      
       - name: 🚀 Upload IPA to TestFlight using Fastlane
