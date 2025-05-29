@@ -132,6 +132,9 @@ jobs:
          ls -la ios/build/ios/ipa
 
 
+      - name: 🧾 Show exported IPA files
+        run: ls -la ios/build/ios/ipa
+
 
      
       - name: 🚀 Upload IPA to TestFlight using Fastlane
