@@ -31,7 +31,7 @@ void main() {
 
     testWidgets('Clear Button Test', (WidgetTester tester) async {
       // Build the Calculator widget
-      await tester.pumpWidget(MyApp()); // Remove 'const'
+      await tester.pumpWidget(const MyApp()); // Remove 'const'
 
       // Simulate pressing the number '3'
       await tester.tap(find.text('3'));
