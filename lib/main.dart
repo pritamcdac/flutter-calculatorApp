@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key); // ✅ Added key
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -12,17 +14,19 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: CalculatorScreen(),
+      home: const CalculatorScreen(), // ✅ Added const
     );
   }
 }
 
 class CalculatorScreen extends StatefulWidget {
+  const CalculatorScreen({Key? key}) : super(key: key); // ✅ Added key
+
   @override
-  _CalculatorScreenState createState() => _CalculatorScreenState();
+  CalculatorScreenState createState() => CalculatorScreenState(); // ✅ Renamed class to public
 }
 
-class _CalculatorScreenState extends State<CalculatorScreen> {
+class CalculatorScreenState extends State<CalculatorScreen> {
   String _output = "0";
   String _input = "";
 
@@ -52,11 +56,11 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Calculator')),
+      appBar: AppBar(title: const Text('Calculator')),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
-          Text(_output, style: TextStyle(fontSize: 48)),
+          Text(_output, style: const TextStyle(fontSize: 48)),
           Row(
             children: <Widget>[
               _buildButton("7"),
@@ -98,7 +102,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
     return Expanded(
       child: OutlinedButton(
         onPressed: () => _buttonPressed(buttonText),
-        child: Text(buttonText, style: TextStyle(fontSize: 24)),
+        child: Text(buttonText, style: const TextStyle(fontSize: 24)),
       ),
     );
   }
