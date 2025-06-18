@@ -43,8 +43,15 @@ jobs:
           path: coverage/report
 
       # ─────────────── Android Build ───────────────
-      - name: 🤖 Build APK
-        run: flutter build apk --release
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v3
+        with:
+            distribution: 'temurin'
+            java-version: '17'
+
+      -  name: 🤖 Build APK
+         run: flutter build apk --release
 
       - name: 🤖 Build AAB
         run: flutter build appbundle --release
