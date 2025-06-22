@@ -1,5 +1,4 @@
-name: Flutter CI iOS
-
+name: Flutter CI iOS.
 on:
   push:
     branches: [ main ]
