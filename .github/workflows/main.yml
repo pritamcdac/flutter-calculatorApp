@@ -27,6 +27,13 @@ jobs:
       - name: 📦 Install dependencies
         run: flutter pub get
 
+      - name: 📦 Install CocoaPods
+        run: |
+            cd ios
+            rm -rf Pods Podfile.lock
+            pod install
+            cd ..
+
       - name: 🧪 Run tests with coverage
         run: flutter test --coverage
 
