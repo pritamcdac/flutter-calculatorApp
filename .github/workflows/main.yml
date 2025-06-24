@@ -30,7 +30,7 @@ jobs:
       - name: 📦 Install CocoaPods
         run: |
             cd ios
-            rm -rf Pods Podfile.lock
+            rm -rf Pods Podfile.lock .symlinks Flutter/Flutter.podspec
             pod install
             cd ..
 
