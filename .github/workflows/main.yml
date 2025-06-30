@@ -126,16 +126,17 @@ jobs:
 
       - name: 📦 Archive iOS app
         run: |
-          xcodebuild -project ios/Runner.xcodeproj \
-            -scheme Runner \
-            -configuration Release \
-            -archivePath build/ios/archive/Runner.xcarchive \
-            CODE_SIGN_STYLE=Manual \
-            DEVELOPMENT_TEAM=VB78Y67GX6 \
-            PROVISIONING_PROFILE_SPECIFIER=CybageCI \
-            PRODUCT_BUNDLE_IDENTIFIER=com.cybage.alm \
-            CODE_SIGN_IDENTITY="Apple Distribution" \
-            archive
+          xcodebuild \
+          -project ios/Runner.xcodeproj \
+          -scheme Runner \
+          -configuration Release \
+          -archivePath build/Runner.xcarchive \
+           CODE_SIGN_STYLE=Manual \
+           DEVELOPMENT_TEAM=VB78Y67GX6 \
+           PROVISIONING_PROFILE_SPECIFIER=CybageCI \
+           CODE_SIGN_IDENTITY="Apple Distribution: CYBAGE SOFTWARE, INC. (VB78Y67GX6)" \
+          -destination generic/platform=iOS \
+           archive
 
       - name: 📤 Export IPA manually
         run: |
